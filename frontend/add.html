@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter une plateforme</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h2>Ajouter une Nouvelle Plateforme</h2>
+      <p>Renseignez les informations pour ajouter une plateforme à surveiller.</p>
+    </header>
+
+    <form id="addPlatformForm">
+      <div class="form-group">
+        <label for="platformName">Nom de la plateforme</label>
+        <input type="text" id="platformName" name="platformName" placeholder="Nom de la plateforme (ex: YouTube)" required>
+      </div>
+
+      <div class="form-group">
+        <label for="platformURL">URL de la plateforme</label>
+        <input type="url" id="platformURL" name="platformURL" placeholder="https://exemple.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="usageDuration">Durée d'utilisation quotidienne (en minutes)</label>
+        <input type="number" id="usageDuration" name="usageDuration" placeholder="120" required>
+      </div>
+
+      <div class="form-group">
+        <label>Jours autorisés :</label>
+        <div class="days-container">
+          <label><input type="checkbox" name="days" value="lundi"> Lundi</label>
+          <label><input type="checkbox" name="days" value="mardi"> Mardi</label>
+          <label><input type="checkbox" name="days" value="mercredi"> Mercredi</label>
+          <label><input type="checkbox" name="days" value="jeudi"> Jeudi</label>
+          <label><input type="checkbox" name="days" value="vendredi"> Vendredi</label>
+          <label><input type="checkbox" name="days" value="samedi"> Samedi</label>
+          <label><input type="checkbox" name="days" value="dimanche"> Dimanche</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Ajouter la plateforme</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('addPlatformForm');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('platformName').value;
+        const url = document.getElementById('platformURL').value;
+        const duration = document.getElementById('usageDuration').value;
+
+        const days = Array.from(document.querySelectorAll('input[name="days"]:checked'))
+                          .map(checkbox => checkbox.value);
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          alert("Vous devez être connecté !");
+          return;
+        }
+
+        fetch('http://localhost:3000/platforms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            name,
+            url,
+            duration,
+            days
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert("Plateforme ajoutée avec succès !");
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+          alert('Erreur lors de l’ajout de la plateforme.');
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

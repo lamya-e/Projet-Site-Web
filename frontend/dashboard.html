@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord - Gestion des plateformes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <h1>Tableau de bord</h1>
+      </div>
+    </header>
+
+    <!-- Section Dashboard -->
+    <section class="dashboard">
+      <div class="dashboard-header">
+        <h2>Bienvenue !</h2>
+        <p>Gérez vos plateformes et leurs règles d'utilisation.</p>
+      </div>
+
+      <!-- Bouton Ajouter une plateforme -->
+      <div class="platform-actions">
+        <button class="add-btn" onclick="window.location.href='add.html'">Ajouter une nouvelle plateforme</button>
+      </div>
+
+      <!-- Liste des plateformes -->
+      <div class="platform-list">
+        <!-- Les plateformes seront ajoutées ici dynamiquement -->
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Script JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        alert("Vous devez être connecté !");
+        window.location.href = "index.html"; // Redirige vers connexion
+        return;
+      }
+
+      const platformList = document.querySelector('.platform-list');
+
+      // Récupérer les plateformes de l'utilisateur
+      fetch('http://localhost:3000/platforms', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        platformList.innerHTML = ''; // Vide avant de remplir
+
+        data.forEach(platform => {
+          const platformCard = document.createElement('div');
+          platformCard.classList.add('platform-card');
+
+          platformCard.innerHTML = `
+            <h3>${platform.nom}</h3>
+            <p><strong>Durée d'utilisation :</strong> ${platform.duree} minutes/jour</p>
+            <p><strong>Jours autorisés :</strong> ${platform.joursAutorises.join(', ')}</p>
+            <div class="platform-buttons">
+              <button class="edit-btn" data-id="${platform._id}">Modifier</button>
+              <button class="delete-btn" data-id="${platform._id}">Supprimer</button>
+            </div>
+          `;
+
+          platformList.appendChild(platformCard);
+        });
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des plateformes:', error);
+        alert("Erreur lors de la récupération des plateformes !");
+      });
+
+      // Gérer les clics sur Modifier / Supprimer
+      platformList.addEventListener('click', function (e) {
+        const id = e.target.dataset.id;
+
+        if (e.target.classList.contains('edit-btn')) {
+          // Redirige vers la page d'édition
+          window.location.href = `edit.html?id=${id}`;
+        }
+
+        if (e.target.classList.contains('delete-btn')) {
+          if (confirm('Voulez-vous vraiment supprimer cette plateforme ?')) {
+            fetch(`http://localhost:3000/platforms/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              alert('Plateforme supprimée avec succès !');
+              location.reload(); // Recharge la page pour mettre à jour
+            })
+            .catch(error => {
+              console.error('Erreur lors de la suppression:', error);
+              alert('Erreur lors de la suppression.');
+            });
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

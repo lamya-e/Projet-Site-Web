@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Conteneur Principal -->
+    <div class="container">
+        <!-- Header / Titre -->
+        <header>
+            <h1>Bienvenue sur notre plateforme</h1>
+            <p>Gérez vos plateformes et leurs règles d'utilisation.</p>
+        </header>
+
+        <!-- Section d'Inscription / Connexion -->
+        <section class="auth-section">
+            <div class="auth-card">
+                <h2>Connexion</h2>
+                <form action="#" method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="Entrez votre email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
+                    </div>
+                    <button type="submit">Se connecter</button>
+                    <p>Pas encore inscrit ? <a href="signup.html">Créer un compte</a></p>
+                </form>
+            </div>
+        </section>
+
+        
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 MonSite. Tous droits réservés.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('loginForm');
+
+        
+            // Gestion de l'inscription
+            if (registerForm) {
+                registerForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Empêche le rechargement
+                    const name = document.getElementById('register-name').value;
+                    const email = document.getElementById('register-email').value;
+                    const password = document.getElementById('register-password').value;
+        
+                    fetch('http://localhost:3000/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.token) {
+                            localStorage.setItem('token', data.token);
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert(data.message || 'Erreur lors de l’inscription');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                    });
+                });
+            }
+        
+            // Gestion de la connexion
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+        
+                    fetch('http://localhost:3000/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.token) {
+                            localStorage.setItem('token', data.token);
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert(data.message || 'Erreur lors de la connexion');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                    });
+                });
+            }
+        });
+        </script>
+        
+</body>
+
+</html>

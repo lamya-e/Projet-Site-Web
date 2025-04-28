@@ -1,0 +1,190 @@
+/* Reset du CSS pour un design uniforme */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #8A2BE2, #ff1e6d ,#a6b220 ,#6be22b); /* Nouveau fond dégradé */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 20px;
+    background-size: 400% 400%;
+    animation: gradientBG 8s ease infinite;
+  }
+  
+  /* Animation du fond dégradé */
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Conteneur principal */
+  .container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  /* Header de la page */
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  h2 {
+    color: #FF6F61; /* Corail */
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    color: #555;
+    font-size: 1.1em;
+    margin-top: 5px;
+  }
+  
+  /* Formulaire et champs de saisie */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+  }
+  
+  input[type="text"],
+  input[type="url"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #BDC3C7; /* Gris clair */
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="number"]:focus {
+    border-color: #FF6F61; /* Corail */
+    outline: none;
+    background-color: #FFF4F2; /* Fond pâle corail */
+  }
+  
+  /* Boutons */
+  button,
+  input[type="submit"] {
+    background-color: #1ABC9C; /* Turquoise */
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button:hover,
+  input[type="submit"]:hover {
+    background-color: #16A085; /* Turquoise foncé */
+    transform: translateY(-2px);
+  }
+  
+  button:active,
+  input[type="submit"]:active {
+    transform: translateY(2px);
+  }
+  
+  /* Section des jours (Checkboxes) */
+  .days-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .day-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    padding: 12px 20px;
+    background-color: #FFE0E0; /* Corail pâle */
+    border-radius: 8px;
+    width: 48%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .day-checkbox input {
+    margin-right: 10px;
+  }
+  
+  .day-checkbox:hover {
+    background-color: #FFB6B6; /* Corail moyen */
+    transform: translateY(-3px);
+  }
+  
+  .day-checkbox input:checked {
+    background-color: #FF6F61; /* Corail */
+    color: white;
+  }
+  
+  .day-checkbox input:checked + span {
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  /* Footer / Bas de page */
+  footer {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  footer a {
+    text-decoration: none;
+    color: #1ABC9C; /* Turquoise */
+    font-weight: 600;
+  }
+  
+  footer a:hover {
+    color: #16A085; /* Turquoise foncé */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 30px;
+      max-width: 100%;
+    }
+  
+    .day-checkbox {
+      width: 100%;
+    }
+  
+    button,
+    input[type="submit"] {
+      width: 100%;
+    }
+  }
+  
